@@ -5,13 +5,13 @@ import java.util.LinkedList;
 
 public class BranchAndBound {
     private double maxValue;
-    public ArrayList<ObjetVole> succes;
-    boolean test = false;
+
+
 
 
     public BranchAndBound(double maxValue) {
         this.maxValue = maxValue;
-        succes = new ArrayList<>();
+
     }
 
 
@@ -41,7 +41,6 @@ public class BranchAndBound {
             }
             branchAndBound(next_node, value, capacity, objetVoles);
         }
-
         return maxValue;
     }
 
@@ -57,6 +56,8 @@ public class BranchAndBound {
             if(objet.getWeight() <= capacity)
             {
 
+
+
                 capacity -= objet.getWeight();
                 borneSuperieur += objet.getValue();
 
@@ -64,6 +65,7 @@ public class BranchAndBound {
 
             else if(capacity > 0)
             {
+
                 borneSuperieur += (double)(capacity)*objet.getRatio();
                 capacity = 0;
                 break;

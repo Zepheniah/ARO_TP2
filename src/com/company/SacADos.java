@@ -40,8 +40,7 @@ public class SacADos {
 
         BranchAndBound bab = new BranchAndBound(sac.borneInferieur);
         double Maxvalue = bab.branchAndBound(0, 0, sac.capacity, sac.ObjetVoles);
-        affiche(bab.succes);
-        //affiche(sac.ObjetVoles);
+        affiche(sac.ObjetVoles);
         System.out.println("Valeur max que le voleur a réussi à emporter : " + Maxvalue);
     }
 
@@ -64,9 +63,8 @@ public class SacADos {
         for(int i = 0 ; i<ObjetVoles.size();i++){
             ObjetVole obj = ObjetVoles.get(i);
             System.out.println("Valeur : " + obj.getValue() + ", Poids : " + obj.getWeight() + ", Ratio : " + obj.getRatio());
-
         }
-        System.out.println(ObjetVoles.size());
+
     }
 
     public double calculBorneInf()
