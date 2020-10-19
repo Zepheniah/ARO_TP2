@@ -32,16 +32,41 @@ public class SacADos {
         SacADos sac = new SacADos();
 
         sac.fill();
-
-        Collections.sort(sac.ObjetVoles);
-        Collections.reverse(sac.ObjetVoles);
-
+        preparation_liste(sac.ObjetVoles);
         sac.borneInferieur = sac.calculBorneInf();
 
-        BranchAndBound bab = new BranchAndBound(sac.borneInferieur);
-        double Maxvalue = bab.branchAndBound(0, 0, sac.capacity, sac.ObjetVoles);
-        affiche(sac.ObjetVoles);
+        AlgoBranch branch = new AlgoBranch(sac.borneInferieur);
+        double Maxvalue = branch.branchAndBound(0, 0, sac.capacity, sac.ObjetVoles);
+
         System.out.println("Valeur max que le voleur a réussi à emporter : " + Maxvalue);
+    }
+
+    /**
+     * Trie la liste dans l'ordre décroissant des rations (Comparator ObjetVole)
+     */
+    public static void preparation_liste(ArrayList<ObjetVole> ObjetsVoles){
+        Collections.sort(ObjetsVoles);
+        Collections.reverse(ObjetsVoles);
+    }
+
+
+    /**
+     *
+     * Parcours les objets volable(la liste étant trié de maniere décroissante sur les valeur de ration) et met le plus d'objet possible
+     * afin d'obtenir l'une des solution possible pour determiner une borne inférieur.
+     */
+
+    public double calculBorneInf()
+    {
+        int currentCapacity = capacity;
+
+        for(int i = 0;i<ObjetVoles.size();i++){
+            if(ObjetVoles.get(i).getWeight() <= currentCapacity){
+                currentCapacity -= ObjetVoles.get(i).getWeight();
+                borneInferieur += ObjetVoles.get(i).getValue();
+            }
+        }
+        return borneInferieur;
     }
 
     public void fill()
@@ -56,32 +81,5 @@ public class SacADos {
             ObjetVole obj = new ObjetVole(scan.nextDouble(), scan.nextDouble());
             ObjetVoles.add(obj);
         }
-    }
-
-    public static void affiche(ArrayList<ObjetVole> ObjetVoles)
-    {
-        for(int i = 0 ; i<ObjetVoles.size();i++){
-            ObjetVole obj = ObjetVoles.get(i);
-            System.out.println("Valeur : " + obj.getValue() + ", Poids : " + obj.getWeight() + ", Ratio : " + obj.getRatio());
-        }
-
-    }
-
-    public double calculBorneInf()
-    {
-        int currentCapacity = capacity;
-        Iterator<ObjetVole> it = ObjetVoles.iterator();
-        ObjetVole ov;
-
-        while(it.hasNext())
-        {
-            ov = it.next();
-            if(ov.getWeight() <= currentCapacity) {
-                currentCapacity -= ov.getWeight();
-                borneInferieur += ov.getValue();
-            }
-        }
-
-        return borneInferieur;
     }
 }
